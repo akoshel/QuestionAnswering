@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-from question_answering.utils import get_dataset
+from question_answering.utils import get_dataset, train_epoch
 from question_answering.models import BertForQuestionAnswering
 
 

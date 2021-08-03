@@ -75,16 +75,12 @@ class TextClassificationDataset(Dataset):
         mask_pad = torch.zeros_like(pad_ids, dtype=torch.int8)
         mask = torch.cat((mask, mask_pad))
         start_token_idx = x_encoded.char_to_token(self.start[index])
-        end_token_idx = x_encoded.char_to_token(self.end[index]) if x_encoded.char_to_token(self.end[index]) is not None else x_encoded.char_to_token(self.end[index] + 1),
-        start_ohe = torch.zeros(self.max_seq_length)
-        start_ohe[start_token_idx] = 1
-        end_ohe = torch.zeros(self.max_seq_length)
-        end_ohe[end_token_idx] = 1
+        end_token_idx = x_encoded.char_to_token(self.end[index]) if x_encoded.char_to_token(self.end[index]) is not None else x_encoded.char_to_token(self.end[index] + 1)
         output_dict = {
             "features": x_tensor,
             "attention_mask": mask,
-            "start_token": start_ohe,
-            "end_token": end_ohe,
+            "start_token": start_token_idx,
+            "end_token": end_token_idx,
         }
 
         return output_dict
