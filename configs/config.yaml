@@ -1,3 +1,4 @@
 data_params:
   train_data: data/train-v1.1.json
   test_data: data/dev-v1.1.json
+num_epoch: 2

@@ -7,6 +7,7 @@ from .data_params import DataParams
 @dataclass
 class ModelParams:
     data_params: DataParams
+    num_epoch: int
 
 ModelParamsSchema = class_schema(ModelParams)
 

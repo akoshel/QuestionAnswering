@@ -16,4 +16,5 @@ def train_epoch(model: nn.Module, iterator, criterion, optimizer):
         total_loss.backward()
         optimizer.step()
         epoch_loss += total_loss
+        logger.debug("iteration {i} loss {l}", i=i, l=total_loss)
     return epoch_loss / len(iterator)
