@@ -2,12 +2,12 @@ from dataclasses import dataclass
 import yaml
 from marshmallow_dataclass import class_schema
 from .data_params import DataParams
-
+from .train_params import TrainParams
 
 @dataclass
 class ModelParams:
     data_params: DataParams
-    num_epoch: int
+    train_params: TrainParams
 
 ModelParamsSchema = class_schema(ModelParams)
 
