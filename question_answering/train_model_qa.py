@@ -26,11 +26,12 @@ def train(config_path: str='configs/config.yaml') -> None:
     criterion = nn.CrossEntropyLoss(ignore_index=train_dataset.pad_vid)
     optimizer = Adam(model.parameters())
     best_val_score = float("Inf")
+    model.to(device)
     for e in range(config.train_params.num_epoch):
         logger.info("epoch {e} started", e=e)
-        train_loss = train_epoch(model, train_dataloader, criterion, optimizer)
+        train_loss = train_epoch(model, train_dataloader, criterion, optimizer, device)
         logger.info("Train loss: {loss}", loss=train_loss)
-        val_score = validate(model, test_dataloader, criterion)
+        val_score = validate(model, test_dataloader, criterion, device)
         logger.info("Val loss: {loss}", loss=val_score)
         if val_score < best_val_score:
             best_val_score = val_score

@@ -9,10 +9,11 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
     epoch_loss = 0
     logger.info("train epoch started")
     for i, batch in enumerate(iterator):
-        start_logits, end_logits = model(batch["features"], batch["attention_mask"])
-        start_loss = criterion(start_logits, batch["start_token"])
+        start_logits, end_logits = model(batch["features"].to(device),
+                                         batch["attention_mask"].to(device))
+        start_loss = criterion(start_logits, batch["start_token"].to(device))
         # start_loss.backward()
-        end_loss = criterion(end_logits, batch["end_token"])
+        end_loss = criterion(end_logits, batch["end_token"].to(device))
         # end_loss.backward()
         total_loss = (start_loss + end_loss) / 2
         total_loss.backward()
@@ -28,9 +29,10 @@ def validate(model: nn.Module, iterator: DataLoader, criterion, device):
     logger.info("Eval started")
     with torch.no_grad():
         for i, batch in enumerate(iterator):
-            start_logits, end_logits = model(batch["features"], batch["attention_mask"])
-            start_loss = criterion(start_logits, batch["start_token"])
-            end_loss = criterion(end_logits, batch["end_token"])
+            start_logits, end_logits = model(batch["features"].to(device),
+                                             batch["attention_mask"].to(device))
+            start_loss = criterion(start_logits, batch["start_token"].to(device))
+            end_loss = criterion(end_logits, batch["end_token"].to(device))
             total_loss = (start_loss + end_loss) / 2
             val_loss += total_loss
     return val_loss / len(iterator)
