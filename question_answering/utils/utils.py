@@ -8,13 +8,7 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
     model.train()
     epoch_loss = 0
     logger.info("train epoch started")
-    iterator = iter(iterator)
-    for i in range(len(iterator)):
-        try:
-            batch = next(iterator)
-        except Exception as e:
-            logger.warning("batch is bad {i} {e}", i=i, e=e)
-            continue
+    for i, batch in enumerate(iterator):
         start_logits, end_logits = model(batch["features"].to(device),
                                          batch["attention_mask"].to(device))
         start_loss = criterion(start_logits, batch["start_token"].to(device))
@@ -34,12 +28,7 @@ def validate(model: nn.Module, iterator: DataLoader, criterion, device):
     val_loss = 0
     logger.info("Eval started")
     with torch.no_grad():
-        for i in range(len(iterator)):
-            try:
-                batch = next(iterator)
-            except Exception as e:
-                logger.warning("batch is bad {i} {e}", i=i, e=e)
-                continue
+        for i, batch in enumerate(iterator):
             start_logits, end_logits = model(batch["features"].to(device),
                                              batch["attention_mask"].to(device))
             start_loss = criterion(start_logits, batch["start_token"].to(device))
