@@ -4,9 +4,9 @@ import torch.nn as nn
 import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from question_answering.utils import get_dataset, train_epoch, validate
-from question_answering.models import BertForQuestionAnswering
-from question_answering.entities import read_model_params
+from utils import get_dataset, train_epoch, validate
+from models import BertForQuestionAnswering
+from entities import read_model_params
 
 def train(config_path: str='configs/config.yaml') -> None:
     config = read_model_params(config_path)
