@@ -11,6 +11,12 @@ def test_get_dataset() -> None:
     train_dataloader = DataLoader(dataset=dataset,
                                   batch_size=2,
                                   shuffle=True)
+    iterator = iter(train_dataloader)
+    for _ in range(len(train_dataloader)):
+        try:
+            _ = next(iterator)
+        except Exception as e:
+            print(f"here {e}")
     mini_batch = next(iter(train_dataloader))
     output = model(mini_batch['features'], mini_batch['attention_mask'])
     assert mini_batch['features'].shape == output[0].shape == output[1].shape

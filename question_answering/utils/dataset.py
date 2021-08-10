@@ -34,7 +34,6 @@ class TextClassificationDataset(Dataset):
         self.texts = texts
         self.start = start
         self.end = end
-        self.label_dict = label_dict
         self.max_seq_length = max_seq_length
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -112,9 +111,7 @@ def get_dataset(filename: str,
         texts=df['text'].values.tolist(),
         start=df['start'].values.tolist(),
         end=df['end'].values.tolist(),
-        label_dict=None,
         max_seq_length=max_seq_length,
     )
     return dataset
-
 
