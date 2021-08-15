@@ -18,5 +18,6 @@ def test_get_dataset() -> None:
         except Exception as e:
             print(f"here {e}")
     mini_batch = next(iter(train_dataloader))
+    features, attention_mask, _, __ = mini_batch
     output = model(mini_batch['features'], mini_batch['attention_mask'])
     assert mini_batch['features'].shape == output[0].shape == output[1].shape

@@ -2,7 +2,7 @@ import json
 from typing import List, Mapping
 import pandas as pd
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer
 
 
@@ -48,7 +48,7 @@ class TextClassificationDataset(Dataset):
         """
         return len(self.texts)
 
-    def __getitem__(self, index) -> Mapping[str, torch.Tensor]:
+    def __getitem__(self, index) -> List[torch.Tensor]: #Mapping[str, torch.Tensor]
         """Gets element of the dataset
 
         Args:
@@ -75,14 +75,7 @@ class TextClassificationDataset(Dataset):
         mask = torch.cat((mask, mask_pad))
         start_token_idx = x_encoded.char_to_token(self.start[index])
         end_token_idx = x_encoded.char_to_token(self.end[index]) if x_encoded.char_to_token(self.end[index]) is not None else x_encoded.char_to_token(self.end[index] + 1)
-        output_dict = {
-            "features": x_tensor,
-            "attention_mask": mask,
-            "start_token": start_token_idx,
-            "end_token": end_token_idx,
-        }
-
-        return output_dict
+        return [x_tensor, mask, start_token_idx, end_token_idx]
 
 
 def get_dataset(filename: str,
