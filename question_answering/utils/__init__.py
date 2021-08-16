@@ -1,2 +1,2 @@
-from .dataset import get_dataset, my_collate
+from .dataset import get_dataset
 from .utils import train_epoch, validate
