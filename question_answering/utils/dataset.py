@@ -2,8 +2,8 @@ import json
 from typing import List, Mapping
 import pandas as pd
 import torch
-from torch.utils.data import Dataset
-from transformers import AutoTokenizer, DistilBertTokenizer
+from torch.utils.data import Dataset, DataLoader
+from transformers import AutoTokenizer
 
 
 class TextClassificationDataset(Dataset):
@@ -16,7 +16,7 @@ class TextClassificationDataset(Dataset):
                  end: List[int] = None,
                  label_dict: Mapping[str, int] = None,
                  max_seq_length: int = 512,
-                 model_name: str = 'distilbert-base-uncased') -> None:
+                 model_name: str = 'cointegrated/rubert-tiny') -> None:
         """
         Args:
             texts (List[str]): a list with texts to classify or to train the
@@ -36,7 +36,7 @@ class TextClassificationDataset(Dataset):
         self.end = end
         self.max_seq_length = max_seq_length
 
-        self.tokenizer = DistilBertTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.sep_vid = self.tokenizer.vocab["[SEP]"]
         self.cls_vid = self.tokenizer.vocab["[CLS]"]
         self.pad_vid = self.tokenizer.vocab["[PAD]"]

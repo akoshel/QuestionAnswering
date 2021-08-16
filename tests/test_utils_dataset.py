@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-from question_answering.utils import get_dataset, my_collate
+from question_answering.utils import get_dataset
 from question_answering.models import BertForQuestionAnswering
 
 
@@ -10,14 +10,13 @@ def test_get_dataset() -> None:
     model = BertForQuestionAnswering()
     train_dataloader = DataLoader(dataset=dataset,
                                   batch_size=2,
-                                  shuffle=False,
-                                  collate_fn=my_collate)
+                                  shuffle=False,)
     iterator = iter(train_dataloader)
-    for i in range(len(train_dataloader)):
-        print(i)
-        if i == 22:
-            print('here')
-        _ = next(iterator)
+    # for i in range(len(train_dataloader)):
+    #     print(i)
+    #     if i == 22:
+    #         print('here')
+    #     _ = next(iterator)
     mini_batch = next(iter(train_dataloader))
     features, attention_mask, _, __ = mini_batch
     output = model(features, attention_mask)
