@@ -1,12 +1,12 @@
 import torch.nn as nn
-from transformers import AutoModel
+from transformers import AutoModel, DistilBertModel
 
 class BertForQuestionAnswering(nn.Module):
 
-    def __init__(self, pretrained_path: str = "cointegrated/rubert-tiny"):
+    def __init__(self, pretrained_path: str = "distilbert-base-uncased"): #"cointegrated/rubert-tiny"
         super().__init__()
         self.num_labels = 2
-        self.bert = AutoModel.from_pretrained(pretrained_path)  # BertModel(configs, add_pooling_layer=False)
+        self.bert = DistilBertModel.from_pretrained(pretrained_path)  # BertModel(configs, add_pooling_layer=False)
         self.qa_outputs = nn.Linear(312, self.num_labels)
 
     def forward(
