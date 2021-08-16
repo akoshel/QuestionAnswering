@@ -30,13 +30,9 @@ def validate(model: nn.Module, iterator: DataLoader, criterion, device):
     with torch.no_grad():
         for i, batch in enumerate(iterator):
             features, attention_mask, start_token, end_token = batch
-            features.to(device)
-            attention_mask.to(device)
-            start_token.to(device)
-            end_token.to(device)
-            start_logits, end_logits = model(features, attention_mask)
-            start_loss = criterion(start_logits, start_token)
-            end_loss = criterion(end_logits, end_token)
+            start_logits, end_logits = model(features.to(device), attention_mask.to(device))
+            start_loss = criterion(start_logits, start_token.to(device))
+            end_loss = criterion(end_logits, end_token.to(device))
             total_loss = (start_loss + end_loss) / 2
             val_loss += total_loss
     return val_loss / len(iterator)
