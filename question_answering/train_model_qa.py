@@ -7,8 +7,11 @@ from torch.utils.data import DataLoader
 from utils import get_dataset, train_epoch, validate
 from models import BertForQuestionAnswering
 from entities import read_model_params
+from torch.utils.tensorboard import SummaryWriter
+
 
 def train(config_path: str='configs/config.yaml') -> None:
+    writer = SummaryWriter()
     config = read_model_params(config_path)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info("Device is {device}", device=device)
@@ -29,9 +32,9 @@ def train(config_path: str='configs/config.yaml') -> None:
     model.to(device)
     for e in range(config.train_params.num_epoch):
         logger.info("epoch {e} started", e=e)
-        train_loss = train_epoch(model, train_dataloader, criterion, optimizer, device)
+        train_loss = train_epoch(model, train_dataloader, criterion, optimizer, device, writer)
         logger.info("Train loss: {loss}", loss=train_loss)
-        val_score = validate(model, test_dataloader, criterion, device)
+        val_score = validate(model, test_dataloader, criterion, device, writer)
         logger.info("Val loss: {loss}", loss=val_score)
         if val_score < best_val_score:
             best_val_score = val_score

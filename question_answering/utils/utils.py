@@ -4,7 +4,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 
-def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, device):
+
+def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, device, writer):
     model.train()
     epoch_loss = 0
     logger.info("train epoch started")
@@ -20,10 +21,11 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
         optimizer.step()
         epoch_loss += total_loss
         logger.debug("iteration {i} loss {l}", i=i, l=total_loss)
+        writer.add_scalar('train loss', total_loss.item())
     return epoch_loss / len(iterator)
 
 
-def validate(model: nn.Module, iterator: DataLoader, criterion, device):
+def validate(model: nn.Module, iterator: DataLoader, criterion, device, writer):
     model.eval()
     val_loss = 0
     logger.info("Eval started")
@@ -35,5 +37,6 @@ def validate(model: nn.Module, iterator: DataLoader, criterion, device):
             end_loss = criterion(end_logits, end_token.to(device))
             total_loss = (start_loss + end_loss) / 2
             val_loss += total_loss
+            writer.add_scalar('validation loss', total_loss.item())
     return val_loss / len(iterator)
 
