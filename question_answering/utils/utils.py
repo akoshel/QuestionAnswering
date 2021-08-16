@@ -44,3 +44,4 @@ def validate(model: nn.Module, iterator: DataLoader, criterion, device):
             total_loss = (start_loss + end_loss) / 2
             val_loss += total_loss
     return val_loss / len(iterator)
+
