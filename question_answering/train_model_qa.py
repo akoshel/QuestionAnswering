@@ -34,12 +34,12 @@ def train(config_path: str='configs/config.yaml') -> None:
         logger.info("epoch {e} started", e=e)
         train_loss = train_epoch(model, train_dataloader, criterion, optimizer, device, writer)
         logger.info("Train loss: {loss}", loss=train_loss)
-        # val_score = validate(model, test_dataloader, criterion, device, writer)
-        # logger.info("Val loss: {loss}", loss=val_score)
-        # if val_score < best_val_score:
-        #     best_val_score = val_score
-        #     with open(os.path.join(config.train_params.model_checkpoint_path, "qa_model.pth"), "wb") as fp:
-        #         torch.save(model.state_dict(), fp)
+        val_score = validate(model, test_dataloader, criterion, device, writer)
+        logger.info("Val loss: {loss}", loss=val_score)
+        if val_score < best_val_score:
+            best_val_score = val_score
+            with open(os.path.join(config.train_params.model_checkpoint_path, "qa_model.pth"), "wb") as fp:
+                torch.save(model.state_dict(), fp)
 
 
 if __name__ == "__main__":
