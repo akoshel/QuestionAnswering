@@ -104,6 +104,7 @@ def get_dataset(filename: str,
     df = pd.DataFrame(raw_dict)
     df["text_len"] = df["text"].apply(lambda x: len(x))
     df = df[df["text_len"] < text_len_limit]
+    df = df.iloc[:4]
     dataset = TextClassificationDataset(
         texts=df['text'].values.tolist(),
         start=df['start'].values.tolist(),

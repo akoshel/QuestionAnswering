@@ -15,9 +15,9 @@ def train(config_path: str='configs/config.yaml') -> None:
     config = read_model_params(config_path)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info("Device is {device}", device=device)
-    train_dataset = get_dataset(config.data_params.train_data)[:4]
+    train_dataset = get_dataset(config.data_params.train_data)
     logger.info("train dataset loaded len={l}", l=len(train_dataset))
-    test_dataset = get_dataset(config.data_params.test_data)[:4]
+    test_dataset = get_dataset(config.data_params.test_data)
     logger.info("test dataset loaded len={l}", l=len(test_dataset))
     train_dataloader = DataLoader(dataset=train_dataset,
                                   batch_size=config.train_params.batch_size,
