@@ -27,7 +27,7 @@ def train(config_path: str='configs/config.yaml') -> None:
                                   shuffle=False)
     model = BertForQuestionAnswering()
     criterion = nn.CrossEntropyLoss(ignore_index=train_dataset.pad_vid)
-    optimizer = Adam(model.parameters())
+    optimizer = Adam(model.parameters(), lr=config.train_params.learning_rate)
     best_val_score = float("Inf")
     model.to(device)
     for e in range(config.train_params.num_epoch):
