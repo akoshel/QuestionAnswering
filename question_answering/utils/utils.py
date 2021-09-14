@@ -12,8 +12,6 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
     for i, batch in enumerate(iterator):
         features, attention_mask, start_token, end_token = batch
         start_logits, end_logits = model(features.to(device), attention_mask.to(device))
-        logger.info("start logits pred {pt} real {rl}", pt=torch.argmax(start_logits, axis=1), rl=start_token) #TODO: remove me
-        logger.info("end logits pred {pt} real {rl}", pt=torch.argmax(end_logits, axis=1), rl=end_token) #TODO: remove me
         start_loss = criterion(start_logits, start_token.to(device))
         # start_loss.backward()
         end_loss = criterion(end_logits, end_token.to(device))
@@ -22,7 +20,8 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
         total_loss.backward()
         optimizer.step()
         epoch_loss += total_loss
-        logger.debug("iteration {i} loss {l}", i=i, l=total_loss)
+        if i % 50 == 0:
+            logger.info("iteration {i} loss {l}", i=i, l=total_loss)
         writer.add_scalar('train loss', total_loss.item())
     return epoch_loss / len(iterator)
 
