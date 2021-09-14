@@ -20,7 +20,7 @@ def train_epoch(model: nn.Module, iterator: DataLoader, criterion, optimizer, de
         total_loss.backward()
         optimizer.step()
         epoch_loss += total_loss
-        if i % 50 == 0:
+        if i % 100 == 0:
             logger.info("iteration {i} loss {l}", i=i, l=total_loss)
         writer.add_scalar('train loss', total_loss.item())
     return epoch_loss / len(iterator)
